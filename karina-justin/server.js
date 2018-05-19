@@ -6,7 +6,7 @@ const express = require('express');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = 'postgres://localhost:5432/kilovolt';
+const conString = 'postgres://postgres:postgrespassword@localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -88,12 +88,22 @@ app.post('/articles', (request, response) => {
 });
 
 app.put('/articles/:id', function(request, response) {
-  let SQL = '';
-  let values = [];
+  let SQL = 'UPDATE authors SET author=$1, "authorUrl"=$2 WHERE author_id=$3;';
+  let values = [
+    request.body.author,
+    request.body.authorUrl,
+    request.body.author_id
+  ];
   client.query( SQL, values )
     .then(() => {
-      let SQL = '';
-      let values = [];
+      let SQL = 'UPDATE articles SET body=$1, category=$2, "publishedOn"=$3, title=$4 WHERE article_id=$5;';
+      let values = [
+        request.body.body,
+        request.body.category,
+        request.body.publishedOn,
+        request.body.title,
+        request.params.id
+      ];
       client.query( SQL, values )
     })
     .then(() => {
