@@ -88,7 +88,7 @@ app.post('/articles', (request, response) => {
 });
 
 app.put('/articles/:id', function(request, response) {
-  let SQL = 'UPDATE articles Set author_id=$1, title=$2, category=$3, "publisedOn"=$4, body=$5 Where articled_id=$6';
+  let SQL = 'UPDATE articles SET author_id=$1, title=$2, category=$3, "publishedOn"=$4, body=$5 Where article_id=$6';
   let values = [
     request.body.author,
     request.body.title,
